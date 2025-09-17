@@ -1,0 +1,16 @@
+# backups and database files
+*.bak
+*.mdf
+*.ldf
+
+# VS Code
+.vscode/
+*.code-workspace
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Python / Jupyter artifacts (if present)
+__pycache__/
+.ipynb_checkpoints/
