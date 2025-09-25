@@ -216,9 +216,40 @@ GROUP BY per.FirstName
 ORDER BY per.FirstName
 ; */
 
-SELECT per.FirstName, per.LastName FROM [HumanResources].[Employee] AS emp
+-- Using GROUP BY to group by first and last names
+/* SELECT per.FirstName, per.LastName FROM [HumanResources].[Employee] AS emp
 INNER JOIN [Person].[Person] AS per
     ON emp.[BusinessEntityID] = per.[BusinessEntityID]
 GROUP BY per.FirstName, per.LastName
 ORDER BY per.FirstName
-;
+; */
+
+--Aggregate Functions
+-- Find the number of customers
+/* SELECT COUNT(per.FirstName) FROM [Sales].[Customer] cust
+INNER JOIN [Person].[Person] AS per
+    ON cust.[PersonID] = per.[BusinessEntityID]
+; */
+
+-- Find the number of customers wwithh the same first name
+/* SELECT per.FirstName, COUNT(per.FirstName) AS [Number] FROM [Sales].[Customer] cust
+INNER JOIN [Person].[Person] AS per
+    ON per.[BusinessEntityID] = cust.[PersonID]
+GROUP BY per.FirstName
+ORDER BY [Number] DESC; */
+
+-- Find the number of customers with the same first name, having more than one occurrence
+/* SELECT per.FirstName, COUNT(per.FirstName) AS [Number] FROM [Sales].[Customer] cust
+INNER JOIN [Person].[Person] AS per
+    ON per.[BusinessEntityID] = cust.[PersonID]
+GROUP BY per.FirstName
+HAVING COUNT(per.FirstName) > 1
+ORDER BY [Number] DESC;  */
+
+-- Find total, average, lowest and highest amounts for sales
+SELECT 
+    SUM(soh.TotalDue) AS TotalSales,
+    AVG(soh.TotalDue) AS AverageSale,
+    MIN(soh.TotalDue) AS LowestSale,
+    MAX(soh.TotalDue) AS HighestSale
+FROM [Sales].[SalesOrderHeader] AS soh; 
