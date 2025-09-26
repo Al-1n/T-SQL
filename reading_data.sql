@@ -247,9 +247,53 @@ HAVING COUNT(per.FirstName) > 1
 ORDER BY [Number] DESC;  */
 
 -- Find total, average, lowest and highest amounts for sales
-SELECT 
+/* SELECT 
     SUM(soh.TotalDue) AS TotalSales,
     AVG(soh.TotalDue) AS AverageSale,
     MIN(soh.TotalDue) AS LowestSale,
     MAX(soh.TotalDue) AS HighestSale
-FROM [Sales].[SalesOrderHeader] AS soh; 
+FROM [Sales].[SalesOrderHeader] AS soh;  */
+
+-- Find total, average, lowest and highest amounts for sales by each salesperson
+-- List salespeople by total sales in descending order
+/* SELECT  
+    p.FirstName,
+    p.LastName,
+    COUNT(soh.SalesOrderID) AS NumberOfSales,
+    SUM(soh.TotalDue) AS TotalSales,
+    AVG(soh.TotalDue) AS AverageSale,
+    MIN(soh.TotalDue) AS LowestSale,
+    MAX(soh.TotalDue) AS HighestSale 
+FROM [Sales].[SalesPerson] AS s
+INNER JOIN [Person].[Person] AS p
+    ON s.[BusinessEntityID] = p.[BusinessEntityID]
+INNER JOIN [Sales].[SalesOrderHeader] soh 
+    ON s.[BusinessEntityID] = soh.[SalesPersonID]
+GROUP BY p.FirstName, p.LastName
+ORDER BY TotalSales DESC
+; */
+
+
+-- String Functions
+SELECT  
+    p.FirstName + ' ' + p.LastName AS FullName,
+    UPPER(p.FirstName) AS FirstNameUpper,
+    LOWER(p.LastName) AS LastNameLower,
+    LEN(p.FirstName) AS FirstNameLength,
+    SUBSTRING(p.LastName, 1, 3) AS LastNameFirst3Chars,
+    -- CONCAT(p.FirstName, ' ', p.LastName) AS FullNameConcat,
+    /* p.FirstName,
+    p.LastName, */
+    COUNT(soh.SalesOrderID) AS NumberOfSales,
+    FORMAT(SUM(soh.TotalDue), 'C') AS TotalSales, -- 'C' for currency format
+    FORMAT(AVG(soh.TotalDue), 'C') AS AverageSale, -- 'C' for currency format
+    FORMAT(MIN(soh.TotalDue), 'C') AS LowestSale,  -- 'C' for currency format
+    FORMAT(MAX(soh.TotalDue), 'C') AS HighestSale  -- 'C' for currency format 
+FROM [Sales].[SalesPerson] AS s
+INNER JOIN [Person].[Person] AS p
+    ON s.[BusinessEntityID] = p.[BusinessEntityID]
+INNER JOIN [Sales].[SalesOrderHeader] soh 
+    ON s.[BusinessEntityID] = soh.[SalesPersonID]
+GROUP BY p.FirstName, p.LastName
+ORDER BY TotalSales DESC
+;
