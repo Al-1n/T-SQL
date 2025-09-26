@@ -275,7 +275,7 @@ ORDER BY TotalSales DESC
 
 
 -- String Functions
-SELECT  
+/* SELECT  
     p.FirstName + ' ' + p.LastName AS FullName,
     UPPER(p.FirstName) AS FirstNameUpper,
     LOWER(p.LastName) AS LastNameLower,
@@ -296,4 +296,68 @@ INNER JOIN [Sales].[SalesOrderHeader] soh
     ON s.[BusinessEntityID] = soh.[SalesPersonID]
 GROUP BY p.FirstName, p.LastName
 ORDER BY TotalSales DESC
-;
+; */
+
+-- Using CAST to convert data types
+/* SELECT  
+    p.FirstName + ' ' + p.LastName AS FullName,
+    COUNT(soh.SalesOrderID) AS NumberOfSales,
+    CAST(SUM(soh.TotalDue) AS DECIMAL(10,2)) AS TotalSales, 
+    CAST(AVG(soh.TotalDue) AS DECIMAL(10,2)) AS AverageSale, 
+    CAST(MIN(soh.TotalDue) AS DECIMAL(10,2)) AS LowestSale,  
+    CAST(MAX(soh.TotalDue) AS DECIMAL(10,2)) AS HighestSale  
+FROM [Sales].[SalesPerson] AS s
+INNER JOIN [Person].[Person] AS p
+    ON s.[BusinessEntityID] = p.[BusinessEntityID]
+INNER JOIN [Sales].[SalesOrderHeader] soh 
+    ON s.[BusinessEntityID] = soh.[SalesPersonID]
+GROUP BY p.FirstName, p.LastName
+ORDER BY TotalSales DESC
+; */
+
+-- Using CONVERT to convert data types
+/* SELECT  
+    p.FirstName + ' ' + p.LastName AS FullName,
+    COUNT(soh.SalesOrderID) AS NumberOfSales,
+    CONVERT(DECIMAL(10,2), SUM(soh.TotalDue)) AS TotalSales, 
+    CONVERT(DECIMAL(10,2), AVG(soh.TotalDue)) AS AverageSale, 
+    CONVERT(DECIMAL(10,2), MIN(soh.TotalDue)) AS LowestSale,  
+    CONVERT(DECIMAL(10,2), MAX(soh.TotalDue)) AS HighestSale  
+FROM [Sales].[SalesPerson] AS s
+INNER JOIN [Person].[Person] AS p
+    ON s.[BusinessEntityID] = p.[BusinessEntityID]
+INNER JOIN [Sales].[SalesOrderHeader] soh 
+    ON s.[BusinessEntityID] = soh.[SalesPersonID]
+GROUP BY p.FirstName, p.LastName
+ORDER BY TotalSales DESC
+; */      
+
+-- Subqueries
+/* SELECT 
+    BusinessEntityID,
+    JobTitle,
+    LoginID,
+    VacationHours,
+    SickLeaveHours
+FROM HumanResources.Employee
+WHERE VacationHours > (SELECT AVG(VacationHours) FROM HumanResources.Employee)
+ORDER BY VacationHours DESC; */
+
+SELECT
+    emp.BusinessEntityID,
+    emp.JobTitle,
+    AVG(VacationHours) AS AverageVacationHours,
+    AVG(SickLeaveHours) AS AverageSickLeaveHours,
+    Sub.AverageVacation -- References subquery below
+FROM HumanResources.Employee AS emp
+JOIN (
+    SELECT
+        JobTitle,
+        AVG(VacationHours) AS AverageVacation
+    FROM HumanResources.Employee emp2
+    GROUP BY JobTitle
+) AS Sub
+    ON emp.JobTitle = Sub.JobTitle
+GROUP BY emp.BusinessEntityID, emp.JobTitle, Sub.AverageVacation
+HAVING AVG(VacationHours) > Sub.AverageVacation --AND emp.JobTitle = 'Design Engineer'
+ORDER BY AverageVacationHours DESC;
