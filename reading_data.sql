@@ -727,7 +727,7 @@ ORDER BY OrderDate DESC
 -- In terms of data type precedence, ISNULL returns the data type of the first argument, while COALESCE returns the data type with the highest precedence among all arguments
 -- When using ISNULL, be cautious about data type conversions, as it may lead to unexpected results if the data types of the two arguments are different
 -- COALESCE is more suitable for scenarios where you need to check multiple columns for NULL values and return the first non-null value     
-SELECT TOP (20)
+/* SELECT TOP (20)
     ISNULL([Title], 'N/A') AS Title,
     [FirstName],
     COALESCE([MiddleName], 'N/A') AS MiddleName,
@@ -737,4 +737,18 @@ SELECT TOP (20)
     [AdditionalContactInfo]
 FROM [Person].[Person]
 ORDER BY [LastName], [FirstName]
-;
+; */
+
+-- Find employees with above average vacation hours compared to their job title average
+SELECT 
+    emp.BusinessEntityID, 
+    emp.JobTitle,
+    emp.VacationHours 
+FROM HumanResources.Employee AS emp 
+GROUP BY emp.JobTitle, emp.BusinessEntityID, emp.VacationHours
+HAVING emp.VacationHours > (
+    SELECT AVG(VacationHours)
+    FROM HumanResources.Employee e2
+    WHERE e2.JobTitle = emp.JobTitle
+)
+ORDER BY emp.JobTitle DESC;
