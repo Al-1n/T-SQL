@@ -1,3 +1,4 @@
+
 -- Full insert statement for inserting data into the 'employees' table
 
 --CREATE TABLE statement for reference (uncomment if table creation is needed)
@@ -57,11 +58,11 @@ VALUES
 ( 'BTC', 'Bitcoin', GETDATE() ); */ 
 
 -- Insert new currency (Litecoin - LTC) data into the 'currencies' table if not exists
-IF NOT EXISTS (SELECT 1 FROM [Sales].[Currency] WHERE CurrencyCode = 'LTC')
+/* IF NOT EXISTS (SELECT 1 FROM [Sales].[Currency] WHERE CurrencyCode = 'LTC')
 BEGIN
     INSERT INTO [Sales].[Currency] (CurrencyCode, Name, ModifiedDate)
     VALUES ('LTC', 'Litecoin', GETDATE());
-END
+END */
 
 -- Select statement to verify the inserted currency data
 /* SELECT * FROM [Sales].[Currency] WHERE CurrencyCode = 'BTC'; */
@@ -119,3 +120,41 @@ VALUES
 -- Select statement to verify the inserted SalesTerritory data
 /* SELECT * FROM [Sales].[SalesTerritory] WHERE CountryRegionCode = 'BS'; */
 
+-- SELECT INTO statement format: SELECT Column1, Column2, ... INTO NewTable FROM ExistingTable WHERE Condition;
+
+-- SELECT INTO statement to create a new table with selected data
+-- Create a new table 'HighValueOrders' with orders having TotalDue greater than 5000
+/* SELECT * INTO [Sales].[HighValueOrders]
+FROM [Sales].[SalesOrderHeader]
+WHERE TotalDue > 5000;  */
+
+-- Select statement to verify the created HighValueOrders table
+/* SELECT * FROM HighValueOrders;  */ 
+
+
+-- Create a new table 'PurchaseOrdersBackup' in the 'Purchasing' schema with orders having TotalDue greater than 10000
+/* SELECT [PurchaseOrderID], EmployeeID, OrderDate, TotalDue INTO [Purchasing].[PurchaseOrdersBackup]
+FROM [Purchasing].[PurchaseOrderHeader]
+WHERE TotalDue > 10000; */
+
+-- Select statement to verify the created PurchaseOrdersBackup table
+/* SELECT * FROM [Purchasing].[PurchaseOrdersBackup]; */
+
+-- Note: Uncomment the above statements to execute them as needed.
+
+-- Create an empty table 'PurchaseOrderDetailNew' with the same structure as 'PurchaseOrderDetail'
+/* SELECT * INTO [Purchasing].[PurchaseOrderDetailNew]
+FROM [Purchasing].[PurchaseOrderDetail]
+WHERE 1=0; */  -- This creates an empty table with the same structure as PurchaseOrderDetail
+
+-- Select statement to verify the created PurchaseOrderDetailNew table
+/* SELECT * FROM [Purchasing].[PurchaseOrderDetailNew]; */
+
+-- Backup or replicate records to a new database (for reference, not to be executed here)
+USE master
+CREATE DATABASE AdventureWorks2022_Copy AS COPY OF AdventureWorks2022;
+GO
+USE AdventureWorks2022
+
+SELECT * INTO [AdventureWorks2022_Copy].[dbo].[Employees]
+FROM [HumanResources].[Employee];
