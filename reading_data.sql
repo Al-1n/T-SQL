@@ -740,7 +740,7 @@ ORDER BY [LastName], [FirstName]
 ; */
 
 -- Find employees with above average vacation hours compared to their job title average
-SELECT 
+/* SELECT 
     emp.BusinessEntityID, 
     emp.JobTitle,
     emp.VacationHours 
@@ -751,4 +751,26 @@ HAVING emp.VacationHours > (
     FROM HumanResources.Employee e2
     WHERE e2.JobTitle = emp.JobTitle
 )
-ORDER BY emp.JobTitle DESC;
+ORDER BY emp.JobTitle DESC; */
+
+
+-- Find employees with above average vacation hours compared to their job title average
+-- Using a subquery in the JOIN clause and filtering by overall average vacation hours
+-- Note: Changed the HAVING clause to compare the job title average with the overall average    
+SELECT
+    emp.BusinessEntityID,
+    emp.JobTitle,
+    emp.VacationHours,        
+    Sub.AverageVacation 
+FROM HumanResources.Employee AS emp
+JOIN (
+    SELECT
+        JobTitle,
+        AVG(VacationHours) AS AverageVacation
+    FROM HumanResources.Employee emp2
+    GROUP BY JobTitle
+) AS Sub
+    ON emp.JobTitle = Sub.JobTitle
+GROUP BY emp.JobTitle, emp.VacationHours, Sub.AverageVacation, emp.BusinessEntityID
+HAVING Sub.AverageVacation > (SELECT AVG(VacationHours) FROM HumanResources.Employee)
+; 
