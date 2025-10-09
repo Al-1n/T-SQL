@@ -1,3 +1,12 @@
+-- Title: Inserting Data in AdventureWorks2022
+-- Date: 2025-10-08
+-- Author: Alin Airinei
+-- Purpose: Create a reference list of useful queries for inserting data in a database
+--
+-- Tags: insert, statement, adventureworks, inserting data
+-- Usage: Run on local SQL Server with appropriate SA credentials
+
+
 
 -- Full insert statement for inserting data into the 'employees' table
 
