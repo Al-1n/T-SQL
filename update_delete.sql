@@ -1,7 +1,7 @@
--- Title: IUpdating and deleting data in AdventureWorks2022
+-- Title: Updating and deleting data in AdventureWorks2022
 -- Date: 2025-10-09
 -- Author: Alin Airinei
--- Purpose: Create a reference list of useful queriesstatements for updating data in a database
+-- Purpose: Create a reference list of useful queries and statements for updating data in a database
 --
 -- Tags: update, delete, statement, adventureworks, updating data
 -- Usage: Run on local SQL Server with appropriate SA credentials
