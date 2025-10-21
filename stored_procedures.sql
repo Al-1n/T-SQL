@@ -89,8 +89,8 @@ GO
 
 -- Another example
 -- Example: Create a stored procedure to get product details by category
-/*
-CREATE PROCEDURE GetProductsByCategory
+
+CREATE OR ALTER PROCEDURE GetProductsByCategory
     @CategoryID INT
 AS
 BEGIN
@@ -106,7 +106,7 @@ GO
 
 -- Example: Execute the stored procedure with a parameter
 EXEC GetProductsByCategory @CategoryID = 1;
--- Note: Replace 1 with the desired CategoryID   */
+-- Note: Replace 1 with the desired CategoryID  
 
 
 -- Another example

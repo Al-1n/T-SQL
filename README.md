@@ -43,6 +43,4 @@ WITH MOVE N'<LogicalDataName>' TO N'/var/opt/mssql/data/AdventureWorks2022.mdf',
 
 Replace `<LogicalDataName>` and `<LogicalLogName>` with the values returned by `RESTORE FILELISTONLY`.
 
-## Notes
-- Do not commit `.bak` files into git. They are large and should be listed in `.gitignore` (already present).
-- Remove or replace credentials in scripts before sharing publicly.
+

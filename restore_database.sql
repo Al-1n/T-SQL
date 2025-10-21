@@ -18,4 +18,5 @@ WITH MOVE N'AdventureWorks2022' TO N'/var/opt/mssql/data/AdventureWorks2022.mdf'
      MOVE N'AdventureWorks2022_Log'  TO N'/var/opt/mssql/data/AdventureWorks2022_log.ldf',
      RECOVERY, REPLACE;
 
---SELECT * FROM AdventureWorks2022.HumanResources.Department
+-- Uncomment to verify restoration
+-- SELECT * FROM AdventureWorks2022.HumanResources.Department

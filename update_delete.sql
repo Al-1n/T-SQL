@@ -319,15 +319,25 @@ GO */
 SELECT * FROM Employees; */
 
 -- Delete a department and observe CASCADE DELETE effect on Employees
-DELETE FROM Departments WHERE DepartmentID = 2; -- Deleting 'IT' department
+/* DELETE FROM Departments WHERE DepartmentID = 2; -- Deleting 'IT' department
 -- Select to verify deletion
 SELECT * FROM Departments;
-SELECT * FROM Employees; -- Employees in 'IT' department should be deleted
+SELECT * FROM Employees; */ -- Employees in 'IT' department should be deleted
 
 -- Drop the tables after demonstration
 /* DROP TABLE Employees;
 DROP TABLE Departments; */
 
 -- Without the CASCADE DELETE, the delete operation would fail if there are related records in the Employees table.
+
+-- Set the default value for a column
+-- Example:
+/* ALTER TABLE [Person].[Person]
+ADD CONSTRAINT DF_EmailPromotion DEFAULT 0 FOR EmailPromotion; */   
+
+-- Add a new column with a default value
+-- Example:
+/* ALTER TABLE [Person].[Person]
+ADD CreatedDate DATETIME DEFAULT GETDATE(); */
 
 -- End of examples
